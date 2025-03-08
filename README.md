@@ -64,6 +64,8 @@ The project is organized into the following main directories:
 
 Once both the backend and frontend are running, you can access the application in your web browser at `http://localhost:3000`. Explore the statistics of Indian cricket players and gain insights into their performance.
 
+For in now backend is running on http://127.0.0.1:8000/
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any suggestions or improvements.
