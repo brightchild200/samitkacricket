@@ -3,7 +3,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'your-secret-key'
+SECRET_KEY = 'riya_5'
 
 DEBUG = True
 
@@ -82,7 +82,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+# URL to access static files
 STATIC_URL = '/static/'
+
+# Directory where static files are located
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Assuming 'static' is in the root directory
+]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

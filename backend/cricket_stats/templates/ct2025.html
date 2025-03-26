@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champions Trophy 2025 Stats</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #33CCCC;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #007777;
+        }
+        button {
+            background-color: #007777;
+            color: white;
+            cursor: pointer;
+        }
+        .stats {
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        canvas {
+            width: 400px !important;
+            height: 400px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="web_name">CRICKLYTICS INDIA</h1>
+        <i class="tag">Champions Trophy 2025 - Player Stats</i>
+    </div>
+    <hr class="rounded">
+    
+    <div class="container">
+        <h2>Search Player Stats</h2>
+        <input type="text" id="playerName" placeholder="Enter Player Name">
+        <button onclick="fetchStats()">Search</button>
+        <div class="stats" id="statsDisplay"></div>
+        <div class="chart-container">
+            <canvas id="statsChart"></canvas>
+        </div>
+    </div>
+    
+    <script>
+        function fetchStats() {
+            const player = document.getElementById('playerName').value;
+            if (!player) {
+                alert('Please enter a player name');
+                return;
+            }
+            
+            const stats = {
+                "Rohit Sharma": {
+                    batting: { runs: 890, avg: 78.56, fifties: 9 },
+                    bowling: { wickets: 2, avg: 45.00, economy: 6.2 }
+                },
+                "Virat Kohli": {
+                    batting: { runs: 765, avg: 95.62, fifties: 8 },
+                    bowling: { wickets: 0, avg: "-", economy: "-" }
+                },
+                "Jasprit Bumrah": {
+                    batting: { runs: 50, avg: 10.0, fifties: 0 },
+                    bowling: { wickets: 22, avg: 16.89, economy: 4.1 }
+                },
+                "Shubman Gill": {
+                    batting: { runs: 650, avg: 55.20, fifties: 5 },
+                    bowling: { wickets: 0, avg: "-", economy: "-" }
+                }
+            };
+            
+            const playerStats = stats[player];
+            if (playerStats) {
+                document.getElementById('statsDisplay').innerHTML = `
+                    <h2>${player} Stats</h2>
+                    <h3>Batting</h3>
+                    <p><strong>Most Runs:</strong> ${playerStats.batting.runs}</p>
+                    <p><strong>Best Batting Average:</strong> ${playerStats.batting.avg}</p>
+                    <p><strong>Most Fifties:</strong> ${playerStats.batting.fifties}</p>
+                    <h3>Bowling</h3>
+                    <p><strong>Most Wickets:</strong> ${playerStats.bowling.wickets}</p>
+                    <p><strong>Best Bowling Average:</strong> ${playerStats.bowling.avg}</p>
+                    <p><strong>Best Economy:</strong> ${playerStats.bowling.economy}</p>
+                `;
+                
+                generateChart(playerStats);
+            } else {
+                document.getElementById('statsDisplay').innerHTML = `<p>No data found for ${player}</p>`;
+            }
+        }
+        
+        function generateChart(stats) {
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+            window.myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Runs', 'Batting Avg', 'Fifties', 'Wickets', 'Bowling Avg', 'Economy'],
+                    datasets: [{
+                        label: 'Player Stats',
+                        data: [stats.batting.runs, stats.batting.avg, stats.batting.fifties, stats.bowling.wickets, stats.bowling.avg, stats.bowling.economy],
+                        backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FFD700', '#FF33A1', '#33FFF5'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+        }
+    </script>
+</body>
+</html>

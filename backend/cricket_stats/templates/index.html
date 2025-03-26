@@ -4,27 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Cricket Player Statistics</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>Cricklytics India</title>
+ <!-- FONT FAMILY -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=DM+Serif+Text:ital@0;1&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Edu+AU+VIC+WA+NT+Arrows:wght@400..700&family=Emblema+One&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Merienda:wght@300..900&family=Sriracha&display=swap" rel="stylesheet">
+
+     <!-- CSS FILE  -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   
 </head>
 <body>
-    <header>
-        <h1>Welcome to Indian Cricket Player Statistics</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'players' %}">Players</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section>
-            <h2>Latest Statistics</h2>
-            <p>Explore the statistics of your favorite Indian cricket players.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 Cricket Stats App</p>
-    </footer>
+    <div class="header">
+        <h1 class="web_name">CRICKLYTICS INDIA</h1>
+        <i class="tag">India’s Stats, Your Insights!</i>
+    </div>
+    <hr class="rounded">
+    <div class="content">
+        <div class="news-section">
+            <h3>Latest News</h3>
+            <div class="firstnews">
+                <a href="https://timesofindia.indiatimes.com/sports/cricket/news/steve-smith-retires-from-odis-after-australias-champions-trophy-exit/amp_articleshow/118727061.cms"><img src="{% static 'images/1st.jpg' %}"  alt="India Wins ICC T20 World Cup 2024">
+                </a>
+                <p class="news-text">News 1: India wins ICC T20 World Cup 2024!</p>
+            </div>
+
+            <div class="firstnews">
+                <a href="https://timesofindia.indiatimes.com/sports/cricket/news/steve-smith-retires-from-odis-after-australias-champions-trophy-exit/amp_articleshow/118727061.cms"><img src="{% static 'images/2nd.jpg' %}"  alt="India Wins ICC T20 World Cup 2024">
+                </a>
+                <p class="news-text">News 2: Star batsman scores fastest century in ODI history.</p>
+            </div>
+            
+        </div>
+        <div class="main-section">
+            <div class="nav">
+                <a href="#">Home</a>
+                <a href="{% url 'cwc2023' %}">ICC CWC 2023</a>
+                <a href="{% url 'ct2025' %}">ICC CT 2025</a>
+                <a href="#">ICC CWC 2027</a>
+            </div>
+            <img  src="{% static 'images/ind_nz.avif' %}" alt="Indian Cricket Team Celebration">
+            <div class="contentpara">
+                <p class="highlight">The India men's national cricket team, also known as <strong>Men in Blue</strong>, represents India in international cricket. It is governed by the Board of Control for Cricket in India and is a full member nation of the International Cricket Council with Test, ODI, and T20I status. <span class="champion">India are the current T20 World Champions and Champions Trophy holders.</span></p>
+        
+                <p>The <strong>International Cricket Council (ICC)</strong> is the global governing body of cricket. It was founded as the Imperial Cricket Conference in 1909 by representatives from Australia, England, and South Africa. In 1965, it was renamed the International Cricket Conference and adopted its current name in 1987. The ICC has its headquarters in Dubai, UAE.</p>
+        
+                <p>Currently, the ICC has <strong>108 member nations</strong>, with 12 full members playing Test matches and 96 associate members. The ICC organizes major tournaments such as the <span class="highlight">Cricket World Cup, T20 World Cup, and ICC World Test Championship</span>. It also oversees international cricket rules, umpires, and security measures.</p>
+            </div>lso co-ordinates action against corruption and match-fixing through its Anti-Corruption and Security Unit.</p>
+        </div>
+    </div>
 </body>
 </html>
