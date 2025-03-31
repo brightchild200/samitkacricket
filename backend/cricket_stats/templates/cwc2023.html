@@ -22,19 +22,13 @@
             border-radius: 5px;
             border: 1px solid #007777;
         }
-       
         button {
             background-color: #007777;
             color: white;
             cursor: pointer;
-            transition: 0.3s;
         }
-        button:hover {
-            background-color: #005555;
-        }
-
         .stats {
-            display: none; /* Initially hidden */
+            display: none;
             margin-top: 20px;
             background: white;
             padding: 20px;
@@ -44,7 +38,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
         table {
             width: 80%;
             margin: 20px auto;
@@ -59,7 +52,6 @@
             color: white;
         }
         .chart-container {
-            display: none; /* Initially hidden */
             display: flex;
             justify-content: center;
             margin-top: 20px;
@@ -74,96 +66,78 @@
     <div class="header">
         <h1 class="web_name">CRICKLYTICS INDIA</h1>
         <i class="tag">World Cup 2023 - Player Stats</i>
-        
     </div>
+
     <hr class="rounded">
-    
+
     <div class="container">
         <h2>Search Player Stats</h2>
         <input type="text" id="playerName" placeholder="Enter Player Name">
         <button onclick="fetchStats()">Search</button>
-        <div class="stats" id="statsDisplay"></div>
-        <div class="chart-container" id="chartContainer">
-            <canvas id="statsChart"></canvas>
+        <div class="stats" id="statsDisplay">
+            <h2 id="playerTitle"></h2>
+            <table>
+                <tr><th colspan="3">Batting</th></tr>
+                <tr><th>Runs</th><th>Batting Avg</th><th>Fifties</th></tr>
+                <tr>
+                    <td id="runs"></td>
+                    <td id="battingAvg"></td>
+                    <td id="fifties"></td>
+                </tr>
+            </table>
+            <table>
+                <tr><th colspan="3">Bowling</th></tr>
+                <tr><th>Wickets</th><th>Bowling Avg</th><th>Economy</th></tr>
+                <tr>
+                    <td id="wickets"></td>
+                    <td id="bowlingAvg"></td>
+                    <td id="economy"></td>
+                </tr>
+            </table>
+            <div class="chart-container">
+                <canvas id="statsChart"></canvas>
+            </div>
         </div>
     </div>
 
-    <button class="back" data-url="{% url 'home' %}">Back to Home</button>
+    <script>
+        const playerData = {
+            "Virat Kohli": { runs: 765, battingAvg: 95.6, fifties: 8, wickets: 2, bowlingAvg: 45.5, economy: 4.3 },
+            "Ravindra Jadeja": { runs: 540, battingAvg: 60.0, fifties: 5, wickets: 15, bowlingAvg: 22.4, economy: 4.1 },
+            "Ishaan Kishan": { runs: 350, battingAvg: 43.75, fifties: 3, wickets: 0, bowlingAvg: "-", economy: "-" },
+            "Hardik Pandya": { runs: 400, battingAvg: 50.0, fifties: 4, wickets: 10, bowlingAvg: 30.0, economy: 5.0 },
+            "KL Rahul": { runs: 600, battingAvg: 75.0, fifties: 6, wickets: 0, bowlingAvg: "-", economy: "-" },
+            "Shreyas Iyer": { runs: 450, battingAvg: 56.2, fifties: 5, wickets: 0, bowlingAvg: "-", economy: "-" },
+            "Shubman Gill": { runs: 520, battingAvg: 65.0, fifties: 4, wickets: 0, bowlingAvg: "-", economy: "-" },
+            "Mohammed Shami": { runs: 50, battingAvg: 10.0, fifties: 0, wickets: 20, bowlingAvg: 18.0, economy: 4.5 },
+            "Suryakumar Yadav": { runs: 400, battingAvg: 50.0, fifties: 4, wickets: 0, bowlingAvg: "-", economy: "-" },
+            "Hardik Pandya": { runs: 400, battingAvg: 50.0, fifties: 4, wickets: 10, bowlingAvg: 30.0, economy: 5.0 },
+            "Shardul Thakur": { runs: 200, battingAvg: 25.0, fifties: 1, wickets: 8, bowlingAvg: 35.0, economy: 5.5 },
+            "Mohammend Siraj": { runs: 100, battingAvg: 20.0, fifties: 0, wickets: 18, bowlingAvg: 22.0, economy: 4.8 },
+            "Kuldeep Yadav": { runs: 20, battingAvg: 10.0, fifties: 0, wickets: 18, bowlingAvg: 18.5, economy: 4.5 },
+            "Axar Patel": { runs: 150, battingAvg: 30.0, fifties: 1, wickets: 12, bowlingAvg: 28.0, economy: 5.2 },
+            "Ravichandran Ashwin": { runs: 80, battingAvg: 16.0, fifties: 0, wickets: 10, bowlingAvg: 25.0, economy: 4.7 },
+            "Rohit Sharma": { runs: 732, battingAvg: 87.2, fifties: 7, wickets: 1, bowlingAvg: 50.2, economy: 5.1 },
+            "Jasprit Bumrah": { runs: 102, battingAvg: 15.3, fifties: 0, wickets: 23, bowlingAvg: 18.5, economy: 3.9 }
+        };
 
-    <!-- <script> 
-document.querySelector('.back').addEventListener('click', function() {
-        window.location.href = this.getAttribute('data-url');
-    });
-
-    function fetchStats() {
-    const player = document.getElementById('playerName').value.trim();
-    if (!player) {
-        alert('Please enter a player name');
-        return;
-    }
-
-    // Fetch player stats
-    fetch(`/get_player_stats/?name=${encodeURIComponent(player)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Player not found');
+        function fetchStats() {
+            const name = document.getElementById("playerName").value;
+            if (playerData[name]) {
+                document.getElementById("playerTitle").innerText = `Statistics for ${name}`;
+                document.getElementById("runs").innerText = playerData[name].runs;
+                document.getElementById("battingAvg").innerText = playerData[name].battingAvg;
+                document.getElementById("fifties").innerText = playerData[name].fifties;
+                document.getElementById("wickets").innerText = playerData[name].wickets;
+                document.getElementById("bowlingAvg").innerText = playerData[name].bowlingAvg;
+                document.getElementById("economy").innerText = playerData[name].economy;
+                document.getElementById("statsDisplay").style.display = "block";
+                generateChart(playerData[name]);
+            } else {
+                alert("Player not found!");
+                document.getElementById("statsDisplay").style.display = "none";
             }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('statsDisplay').innerHTML = `
-                <h2>${data.name} Stats</h2>
-                <table>
-                    <tr><th colspan="3">Batting</th></tr>
-                    <tr><th>Most Runs</th><th>Batting Avg</th><th>Fifties</th></tr>
-                    <tr>
-                        <td>${data.batting.runs}</td>
-                        <td>${data.batting.avg}</td>
-                        <td>${data.batting.fifties}</td>
-                    </tr>
-                </table>
-                <table>
-                    <tr><th colspan="3">Bowling</th></tr>
-                    <tr><th>Most Wickets</th><th>Bowling Avg</th><th>Economy</th></tr>
-                    <tr>
-                        <td>${data.bowling.wickets}</td>
-                        <td>${data.bowling.avg}</td>
-                        <td>${data.bowling.economy}</td>
-                    </tr>
-                </table>
-            `;
-        })
-        .catch(error => {
-            document.getElementById('statsDisplay').innerHTML = `<p>${error.message}</p>`;
-        });
-
-    // Fetch match stats
-    fetch(`/get_match_stats/?name=${encodeURIComponent(player)}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.matches) {
-                let matchTable = `
-                    <h2>Match Stats</h2>
-                    <table>
-                        <tr><th>Date</th><th>Opponent</th><th>Runs Scored</th><th>Wickets Taken</th></tr>
-                `;
-                data.matches.forEach(match => {
-                    matchTable += `
-                        <tr>
-                            <td>${match.date}</td>
-                            <td>${match.opponent}</td>
-                            <td>${match.runs_scored}</td>
-                            <td>${match.wickets_taken}</td>
-                        </tr>
-                    `;
-                });
-                matchTable += `</table>`;
-                document.getElementById('statsDisplay').innerHTML += matchTable;
-            }
-        });
-}
-
-// ok
+        }
 
         function generateChart(stats) {
             const ctx = document.getElementById('statsChart').getContext('2d');
@@ -176,7 +150,7 @@ document.querySelector('.back').addEventListener('click', function() {
                     labels: ['Runs', 'Batting Avg', 'Fifties', 'Wickets', 'Bowling Avg', 'Economy'],
                     datasets: [{
                         label: 'Player Stats',
-                        data: [stats.batting.runs, stats.batting.avg, stats.batting.fifties, stats.bowling.wickets, stats.bowling.avg, stats.bowling.economy],
+                        data: [stats.runs, stats.battingAvg, stats.fifties, stats.wickets, stats.bowlingAvg, stats.economy],
                         backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FFD700', '#FF33A1', '#33FFF5'],
                         borderWidth: 1
                     }]
@@ -186,37 +160,6 @@ document.querySelector('.back').addEventListener('click', function() {
                 }
             });
         }
-    </script> -->
-
-<!-- to do the database phele wala hardcoded hai -->
-    {% if player %}
-    <h2>Statistics for {{ player.name }}</h2>
-    <table>
-        <tr>
-            <th>Matches</th>
-            <th>Innings</th>
-            <th>Runs</th>
-            <th>Batting Average</th>
-            <th>Strike Rate</th>
-            <th>100s</th>
-            <th>50s</th>
-            <th>Best Score</th>
-        </tr>
-        <tr>
-            <td>{{ player.matches }}</td>
-            <td>{{ player.innings }}</td>
-            <td>{{ player.runs }}</td>
-            <td>{{ player.batting_avg }}</td>
-            <td>{{ player.strike_rate }}</td>
-            <td>{{ player.hundreds }}</td>
-            <td>{{ player.fifties }}</td>
-            <td>{{ player.best_score }}</td>
-        </tr>
-    </table>
-    {% else %}
-    <p>No player found. Please search for a valid player name.</p>
-    {% endif %}
-
-
+    </script>
 </body>
 </html>

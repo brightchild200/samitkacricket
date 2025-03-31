@@ -28,11 +28,28 @@
             cursor: pointer;
         }
         .stats {
+            display: none;
             margin-top: 20px;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #007777;
+        }
+        th {
+            background: #007777;
+            color: white;
         }
         .chart-container {
             display: flex;
@@ -56,22 +73,35 @@
         <h2>Search Player Stats</h2>
         <input type="text" id="playerName" placeholder="Enter Player Name">
         <button onclick="fetchStats()">Search</button>
-        <div class="stats" id="statsDisplay"></div>
-        <div class="chart-container">
-            <canvas id="statsChart"></canvas>
+        <div class="stats" id="statsDisplay">
+            <h2 id="playerTitle"></h2>
+            <table>
+                <tr><th colspan="3">Batting</th></tr>
+                <tr><th>Runs</th><th>Batting Avg</th><th>Fifties</th></tr>
+                <tr>
+                    <td id="runs"></td>
+                    <td id="battingAvg"></td>
+                    <td id="fifties"></td>
+                </tr>
+            </table>
+            <table>
+                <tr><th colspan="3">Bowling</th></tr>
+                <tr><th>Wickets</th><th>Bowling Avg</th><th>Economy</th></tr>
+                <tr>
+                    <td id="wickets"></td>
+                    <td id="bowlingAvg"></td>
+                    <td id="economy"></td>
+                </tr>
+            </table>
+            <div class="chart-container">
+                <canvas id="statsChart"></canvas>
+            </div>
         </div>
     </div>
     
     <script>
-        function fetchStats() {
-            const player = document.getElementById('playerName').value;
-            if (!player) {
-                alert('Please enter a player name');
-                return;
-            }
-            
-            const stats = {
-                "Rohit Sharma": {
+        const playerData = {
+            "Rohit Sharma": {
                     batting: { runs: 890, avg: 78.56, fifties: 9 },
                     bowling: { wickets: 2, avg: 45.00, economy: 6.2 }
                 },
@@ -79,6 +109,50 @@
                     batting: { runs: 765, avg: 95.62, fifties: 8 },
                     bowling: { wickets: 0, avg: "-", economy: "-" }
                 },
+                "KL Rahul": {
+                    batting: { runs: 540, avg: 60.00, fifties: 6 },
+                    bowling: { wickets: 1, avg: 50.00, economy: 5.0 }
+                },
+                "Ravindra Jadeja": {
+                    batting: { runs: 540, avg: 60.00, fifties: 5 },
+                    bowling: { wickets: 15, avg: 22.40, economy: 4.1 }
+                },
+                "Varun Chakravarthy": {
+                    batting: { runs: 20, avg: 10.0, fifties: 0 },
+                    bowling: { wickets: 18, avg: 18.50, economy: 4.5 }
+                },
+                "Arshdeep Singh": {
+                    batting: { runs: 30, avg: 15.0, fifties: 0 },
+                    bowling: { wickets: 12, avg: 25.00, economy: 5.2 }
+                },
+                "Mohammad Shami": {
+                    batting: { runs: 40, avg: 20.0, fifties: 0 },
+                    bowling: { wickets: 20, avg: 18.00, economy: 4.8 }
+                },
+                "Kuldeep Yadav": {
+                    batting: { runs: 25, avg: 12.5, fifties: 0 },
+                    bowling: { wickets: 15, avg: 22.00, economy: 4.6 }
+                },
+                "Washington Sundar": {
+                    batting: { runs: 100, avg: 50.0, fifties: 1 },
+                    bowling: { wickets: 5, avg: 30.00, economy: 5.0 }
+                },
+                "Axar Patel": {
+                    batting: { runs: 80, avg: 40.0, fifties: 0 },
+                    bowling: { wickets: 10, avg: 28.00, economy: 4.7 }
+                },
+                "Hardik Pandya": {
+                    batting: { runs: 400, avg: 50.0, fifties: 4 },
+                    bowling: { wickets: 10, avg: 30.00, economy: 5.0 }
+                },
+                "Rishabh Pant": {
+                    batting: { runs: 300, avg: 37.50, fifties: 3 },
+                    bowling: { wickets: 0, avg: "-", economy: "-" }
+                },
+                "Shreyas Iyer": {
+                    batting: { runs: 450, avg: 56.25, fifties: 5 },
+                    bowling: { wickets: 0, avg: "-", economy: "-" }
+                },  
                 "Jasprit Bumrah": {
                     batting: { runs: 50, avg: 10.0, fifties: 0 },
                     bowling: { wickets: 22, avg: 16.89, economy: 4.1 }
@@ -87,28 +161,26 @@
                     batting: { runs: 650, avg: 55.20, fifties: 5 },
                     bowling: { wickets: 0, avg: "-", economy: "-" }
                 }
-            };
-            
-            const playerStats = stats[player];
-            if (playerStats) {
-                document.getElementById('statsDisplay').innerHTML = `
-                    <h2>${player} Stats</h2>
-                    <h3>Batting</h3>
-                    <p><strong>Most Runs:</strong> ${playerStats.batting.runs}</p>
-                    <p><strong>Best Batting Average:</strong> ${playerStats.batting.avg}</p>
-                    <p><strong>Most Fifties:</strong> ${playerStats.batting.fifties}</p>
-                    <h3>Bowling</h3>
-                    <p><strong>Most Wickets:</strong> ${playerStats.bowling.wickets}</p>
-                    <p><strong>Best Bowling Average:</strong> ${playerStats.bowling.avg}</p>
-                    <p><strong>Best Economy:</strong> ${playerStats.bowling.economy}</p>
-                `;
-                
-                generateChart(playerStats);
+        };
+
+        function fetchStats() {
+            const name = document.getElementById("playerName").value;
+            if (playerData[name]) {
+                document.getElementById("playerTitle").innerText = `Statistics for ${name}`;
+                document.getElementById("runs").innerText = playerData[name].batting.runs;
+                document.getElementById("battingAvg").innerText = playerData[name].batting.avg;
+                document.getElementById("fifties").innerText = playerData[name].batting.fifties;
+                document.getElementById("wickets").innerText = playerData[name].bowling.wickets;
+                document.getElementById("bowlingAvg").innerText = playerData[name].bowling.avg;
+                document.getElementById("economy").innerText = playerData[name].bowling.economy;
+                document.getElementById("statsDisplay").style.display = "block";
+                generateChart(playerData[name]);
             } else {
-                document.getElementById('statsDisplay').innerHTML = `<p>No data found for ${player}</p>`;
+                alert("Player not found!");
+                document.getElementById("statsDisplay").style.display = "none";
             }
         }
-        
+
         function generateChart(stats) {
             const ctx = document.getElementById('statsChart').getContext('2d');
             if (window.myChart) {
@@ -120,7 +192,14 @@
                     labels: ['Runs', 'Batting Avg', 'Fifties', 'Wickets', 'Bowling Avg', 'Economy'],
                     datasets: [{
                         label: 'Player Stats',
-                        data: [stats.batting.runs, stats.batting.avg, stats.batting.fifties, stats.bowling.wickets, stats.bowling.avg, stats.bowling.economy],
+                        data: [
+                            stats.batting.runs,
+                            stats.batting.avg,
+                            stats.batting.fifties,
+                            stats.bowling.wickets,
+                            stats.bowling.avg,
+                            stats.bowling.economy
+                        ],
                         backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FFD700', '#FF33A1', '#33FFF5'],
                         borderWidth: 1
                     }]

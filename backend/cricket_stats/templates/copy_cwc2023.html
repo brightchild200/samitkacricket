@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Cup 2023 Stats</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #33CCCC;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #007777;
+        }
+       
+        button {
+            background-color: #007777;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #005555;
+        }
+
+        .stats {
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #007777;
+        }
+        th {
+            background: #007777;
+            color: white;
+        }
+        .chart-container {
+            display: none; /* Initially hidden */
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        canvas {
+            width: 400px !important;
+            height: 400px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="web_name">CRICKLYTICS INDIA</h1>
+        <i class="tag">World Cup 2023 - Player Stats</i>
+        
+    </div>
+    <hr class="rounded">
+    
+    <div class="container">
+        <h2>Search Player Stats</h2>
+        <input type="text" id="playerName" placeholder="Enter Player Name">
+        <button onclick="fetchStats()">Search</button>
+        <div class="stats" id="statsDisplay"></div>
+        <div class="chart-container" id="chartContainer">
+            <canvas id="statsChart"></canvas>
+        </div>
+    </div>
+
+    <button class="back" data-url="{% url 'home' %}">Back to Home</button>
+
+     <script> 
+document.querySelector('.back').addEventListener('click', function() {
+        window.location.href = this.getAttribute('data-url');
+    });
+
+    function fetchStats() {
+    const player = document.getElementById('playerName').value.trim();
+    if (!player) {
+        alert('Please enter a player name');
+        return;
+    }
+
+
+
+
+
+
+
+    
+//     // Fetch player stats
+//     fetch(`/get_player_stats/?name=${encodeURIComponent(player)}`)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Player not found');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             document.getElementById('statsDisplay').innerHTML = `
+//                 <h2>${data.name} Stats</h2>
+//                 <table>
+//                     <tr><th colspan="3">Batting</th></tr>
+//                     <tr><th>Most Runs</th><th>Batting Avg</th><th>Fifties</th></tr>
+//                     <tr>
+//                         <td>${data.batting.runs}</td>
+//                         <td>${data.batting.avg}</td>
+//                         <td>${data.batting.fifties}</td>
+//                     </tr>
+//                 </table>
+//                 <table>
+//                     <tr><th colspan="3">Bowling</th></tr>
+//                     <tr><th>Most Wickets</th><th>Bowling Avg</th><th>Economy</th></tr>
+//                     <tr>
+//                         <td>${data.bowling.wickets}</td>
+//                         <td>${data.bowling.avg}</td>
+//                         <td>${data.bowling.economy}</td>
+//                     </tr>
+//                 </table>
+//             `;
+//         })
+//         .catch(error => {
+//             document.getElementById('statsDisplay').innerHTML = `<p>${error.message}</p>`;
+//         });
+
+//     // Fetch match stats
+//     fetch(`/get_match_stats/?name=${encodeURIComponent(player)}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.matches) {
+//                 let matchTable = `
+//                     <h2>Match Stats</h2>
+//                     <table>
+//                         <tr><th>Date</th><th>Opponent</th><th>Runs Scored</th><th>Wickets Taken</th></tr>
+//                 `;
+//                 data.matches.forEach(match => {
+//                     matchTable += `
+//                         <tr>
+//                             <td>${match.date}</td>
+//                             <td>${match.opponent}</td>
+//                             <td>${match.runs_scored}</td>
+//                             <td>${match.wickets_taken}</td>
+//                         </tr>
+//                     `;
+//                 });
+//                 matchTable += `</table>`;
+//                 document.getElementById('statsDisplay').innerHTML += matchTable;
+//             }
+//         });
+// }
+
+// // ok
+
+//         function generateChart(stats) {
+//             const ctx = document.getElementById('statsChart').getContext('2d');
+//             if (window.myChart) {
+//                 window.myChart.destroy();
+//             }
+//             window.myChart = new Chart(ctx, {
+//                 type: 'pie',
+//                 data: {
+//                     labels: ['Runs', 'Batting Avg', 'Fifties', 'Wickets', 'Bowling Avg', 'Economy'],
+//                     datasets: [{
+//                         label: 'Player Stats',
+//                         data: [stats.batting.runs, stats.batting.avg, stats.batting.fifties, stats.bowling.wickets, stats.bowling.avg, stats.bowling.economy],
+//                         backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FFD700', '#FF33A1', '#33FFF5'],
+//                         borderWidth: 1
+//                     }]
+//                 },
+//                 options: {
+//                     responsive: true
+//                 }
+//             });
+//         }
+//     </script> 
+
+// <!-- to do the database phele wala hardcoded hai -->
+//     <!-- {% if player %}
+//     <h2>Statistics for {{ player.name }}</h2>
+//     <table>
+//         <tr>
+//             <th>Matches</th>
+//             <th>Innings</th>
+//             <th>Runs</th>
+//             <th>Batting Average</th>
+//             <th>Strike Rate</th>
+//             <th>100s</th>
+//             <th>50s</th>
+//             <th>Best Score</th>
+//         </tr>
+//         <tr>
+//             <td>{{ player.matches }}</td>
+//             <td>{{ player.innings }}</td>
+//             <td>{{ player.runs }}</td>
+//             <td>{{ player.batting_avg }}</td>
+//             <td>{{ player.strike_rate }}</td>
+//             <td>{{ player.hundreds }}</td>
+//             <td>{{ player.fifties }}</td>
+//             <td>{{ player.best_score }}</td>
+//         </tr>
+//     </table>
+//     {% else %}
+//     <p>No player found. Please search for a valid player name.</p>
+//     {% endif %} -->
+
+
+</body>
+</html>
