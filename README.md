@@ -2,6 +2,10 @@
 
 This project is a full-stack web application designed to display statistics of Indian cricket players. It includes features for data extraction, cleaning, and analysis, providing users with insights into player performance.
 
+## Demo Video
+
+[Watch the Demo Video](https://drive.google.com/file/d/19El6PfcGlnfkCnkJohM_GC-lDFEV0b_h/view?usp=drive_link)
+
 ## Project Structure
 
 The project is organized into the following main directories:
